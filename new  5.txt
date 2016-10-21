@@ -1,0 +1,71 @@
+     ini_set('display_errors',1);
+     ini_set('display_startup_errors',1);
+     error_reporting(-1);
+
+       echo 'Hello, world!';
+
+     //Copied and Pasted straight from the provided connection strings in Cloud SQL
+     // Using PDO_MySQL (connecting from App Engine)
+     $db = new pdo('mysql:unix_socket=/cloudsql/cloud-assignment-nola:us-central1:cloud-assignment-nola',
+         'root',  // username
+         'root'       // password
+     );
+	 
+
+     // Using mysqli (connecting from App Engine)
+     $sql = new mysqli(
+         null, // host
+         'root', // username
+         'root',     // password
+         'patrol_list', // database name
+         null,
+         '/cloudsql/cloud-assignment-nola:us-central1:cloud-assignment-nola'
+     );
+	
+
+     // Using MySQL API (connecting from App Engine)
+     $conn = mysql_connect(':/cloudsql/cloud-assignment-nola:us-central1:cloud-assignment-nola',
+         'root', // username
+         'root'      // password
+     );
+	if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+	}else {
+	echo "this worked";
+}
+
+
+mysqli_select_db($conn, "patrol_list") or die ("no database");   
+$sql = "SELECT * FROM entries";
+if($result = mysqli_query($conn, $sql)){
+    if(mysqli_num_rows($result) > 0){
+        echo "<table>";
+            echo "<tr>";
+                echo "<th>first_name</th>";
+                echo "<th>last_name</th>";
+				echo "<th>club</th>";
+                echo "<th>membership_id</th>";
+            echo "</tr>";
+        while($row = mysqli_fetch_array($result)){
+            echo "<tr>";
+                echo "<td>" . $row['first_name'] . "</td>";
+                echo "<td>" . $row['last_name'] . "</td>";
+                echo "<td>" . $row['club'] . "</td>";
+				echo "<td>" . $row['membership_id'] . "</td>";
+            echo "</tr>";
+        }
+        echo "</table>";
+        // Close result set
+        mysqli_free_result($result);
+    } else{
+        echo "No records matching your query were found.";
+    }
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($conn);
+}
+ 
+// Close connection
+mysqli_close($conn);
+     echo "<br><br/>pdo connection: ";
+     echo "<br><br/> msqli connection:";
+     echo "<br><br/> mysql conn: ";

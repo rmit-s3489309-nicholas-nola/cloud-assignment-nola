@@ -1,0 +1,36 @@
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("Nicholas", "Nola", "Portsea", "901001");
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("James", "Nola", "Sorrento", "901002");
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("David", "Cameron", "Portsea", "901003");
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("Michael", "Smith", "Rye", "901004");
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("Jane", "Smith", "Rye", "901005");
+INSERT INTO entries (first_name, last_name, club, membership_id) values ("Laura", "Smith", "Rye", "901006");
+
+
+
+<?php
+$message="";
+if(count($_POST)>0) {
+$conn = mysql_connect("unix_socket=/cloudsql/cloud-assignment-nola:us-central1:cloud-assignment-nola","root","");
+mysql_select_db("patrol_list",$conn);
+$result = mysql_query("SELECT * FROM entries WHERE first_name='" . $_POST["guest_firstname"] . "' and last_name = '". $_POST["guest_lastname"]."'");
+$count  = mysql_num_rows($result);
+if($count==0) {
+$message = "No work";
+} else {
+$message = "YES";
+}
+}
+?>
+
+
+$connection = mysqli_connect(DB_SERVER,DB_USER,DB_PASS);
+if (!$connection) {
+    die("Database connection failed: " . mysqli_error());
+}
+
+// 2. Select a database to use 
+$db_select = mysqli_select_db($connection, DB_NAME);
+if (!$db_select) {
+    die("Database selection failed: " . mysqli_error());
+}
+?>
